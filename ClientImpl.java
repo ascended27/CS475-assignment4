@@ -1,4 +1,6 @@
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * ------- From the PDF ------------------------------
@@ -18,11 +20,16 @@ import java.rmi.Remote;
  * it is relatively straightforward to design a simple GUI for this application
  * ---------------------------------------------------
  */
-public interface Client extends Remote{
+public class ClientImpl extends UnicastRemoteObject implements Client{
+    protected ClientImpl() throws RemoteException {
+    }
+
     /**
      * Notifies the User that an event has started.
      *
      * @param event The event to notify the user with
      */
-    void notify(Event event);
+    public void notify(Event event){
+
+    }
 }

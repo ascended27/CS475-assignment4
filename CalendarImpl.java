@@ -37,12 +37,15 @@
  * ---------------------------------------------------
  */
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.security.Timestamp;
 import java.util.List;
 
-public interface Calendar extends Remote {
+public class CalendarImpl extends UnicastRemoteObject implements Calendar {
+
+    protected CalendarImpl() throws RemoteException {
+    }
 
     /**
      * Retrieves event for passed user with passed start and end
@@ -52,7 +55,9 @@ public interface Calendar extends Remote {
      * @param end
      * @return The event
      */
-    Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException;
+    public Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException{
+        return null;
+    }
 
     /**
      * Schedules an event with a list of attendees specified by users
@@ -60,5 +65,7 @@ public interface Calendar extends Remote {
      * @param event
      * @return If the schedule is inserted successfully
      */
-    boolean scheduleEvent(List<User> users, Event event) throws RemoteException;
+    public boolean scheduleEvent(List<User> users, Event event) throws RemoteException{
+        return false;
+    }
 }

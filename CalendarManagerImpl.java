@@ -1,5 +1,6 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * The Calendar Manager class will handle all
@@ -16,7 +17,10 @@ import java.rmi.RemoteException;
  * of names of other users in the work group.
  * ---------------------------------------------------
  */
-public interface CalendarManager extends Remote {
+public class CalendarManagerImpl extends UnicastRemoteObject implements CalendarManager {
+
+    protected CalendarManagerImpl() throws RemoteException {
+    }
 
     /**
      * Gets the user's calendar if it exists otherwise creates a new
@@ -26,6 +30,8 @@ public interface CalendarManager extends Remote {
      * @return The calendar
      * @throws RemoteException
      */
-    Calendar getCalendar(User user) throws RemoteException;
+    public Calendar getCalendar(User user) throws RemoteException{
+        return null;
+    }
 
 }
