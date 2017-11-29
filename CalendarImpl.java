@@ -115,7 +115,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
         // If we have attendees we are in a group event.
         // If this calendar owner is the same as the event owner then we are need to invite the attendees
-        if (attendees.size() != 0 && owner.name.equals(this.owner.name)) {
+        if (attendees.size() != 0 && owner.getName().equals(this.owner.getName())) {
             CalendarManager cm = new CalendarManagerImpl();
 
             for (User u : attendees) {
