@@ -22,8 +22,8 @@ import java.util.ArrayList;
  */
 public class CalendarManagerImpl extends UnicastRemoteObject implements CalendarManager {
 
-	List<Calendar> calendars;
-	private static CalendarManager theInstance;
+	List<CalendarImpl> calendars;
+	private static CalendarManagerImpl theInstance;
 
 	public Calendar makeCalendar(User user)
 	{
@@ -35,7 +35,7 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
 		calendars = new ArrayList<>();
     }
 
-	public static CalendarManager getInstance() throws RemoteException
+	public static CalendarManagerImpl getInstance() throws RemoteException
 	{
 		if(theInstance == null)
 			theInstance = new CalendarManagerImpl();
@@ -51,8 +51,13 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @return The calendar
      * @throws RemoteException
      */
-    public Calendar getCalendar(User user) throws RemoteException{
+    public CalendarImpl getCalendar(User user) throws RemoteException{
         return null;
     }
+
+	@Override
+	public CalendarImpl makeCalendar(Client user) throws RemoteException{
+		return null;
+	}
 
 }

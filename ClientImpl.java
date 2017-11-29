@@ -31,7 +31,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
      *
      * @param event The event to notify the user with
      */
-    public void notify(Event event){
+    public void notify(Event event) throws RemoteException{
 
     }
 
