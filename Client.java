@@ -20,10 +20,13 @@ import java.rmi.RemoteException;
  * ---------------------------------------------------
  */
 public interface Client extends Remote{
+
     /**
      * Notifies the User that an event has started.
      *
      * @param event The event to notify the user with
      */
     void notify(Event event) throws RemoteException;
+
+    User getUser() throws RemoteException;
 }

@@ -1,3 +1,4 @@
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 
 public class Clock extends Thread {
@@ -19,7 +20,11 @@ public class Clock extends Thread {
             for (Event event : calendar.getEventList()) {
                 if (event.getStart().equals(ts)) {
                     // Notify user
-                    // TODO: Need to figure out how to get the client in here...
+                    try {
+                        calendar.getOwner().notify(event);
+                    } catch(RemoteException e){
+                        // TODO: Handle this? Or throw it up?
+                    }
                 }
             }
 

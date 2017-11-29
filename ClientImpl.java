@@ -21,6 +21,8 @@ import java.rmi.server.UnicastRemoteObject;
  * ---------------------------------------------------
  */
 public class ClientImpl extends UnicastRemoteObject implements Client{
+    User user;
+
     protected ClientImpl() throws RemoteException {
     }
 
@@ -31,5 +33,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client{
      */
     public void notify(Event event){
 
+    }
+
+    @Override
+    public User getUser() throws RemoteException {
+        return user;
     }
 }

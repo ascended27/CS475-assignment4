@@ -16,7 +16,7 @@ public class Event {
     private String title;
     private Timestamp start;
     private Timestamp end;
-    private User owner;
+    private Client owner;
     private List<User> attendees;
     private boolean open;
 
@@ -33,7 +33,7 @@ public class Event {
      * @param type
      * @param open
      */
-    public Event(String title, Timestamp start, Timestamp end, User owner, List<User> attendees,boolean type, boolean open) {
+    public Event(String title, Timestamp start, Timestamp end, Client owner, List<User> attendees,boolean type, boolean open) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -67,11 +67,11 @@ public class Event {
         this.end = end;
     }
 
-    public User getOwner() {
+    public Client getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(Client owner) {
         this.owner = owner;
     }
 

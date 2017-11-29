@@ -45,11 +45,11 @@ import java.util.List;
 
 public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
-    public User owner;
+    public Client owner;
     private Thread clockThread;
     private ArrayList<Event> eventList;
 
-    protected CalendarImpl(User owner) throws RemoteException {
+    protected CalendarImpl(Client owner) throws RemoteException {
         this.owner = owner;
         startClock(owner);
     }
@@ -62,7 +62,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @param end   The ending time of the event to retrieve
      * @return The event
      */
-    public Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException {
+    public Event retrieveEvent(Client user, Timestamp start, Timestamp end) throws RemoteException {
         Event toReturn = null;
         for (Event event : eventList) {
             if (event.getStart().equals(start) && event.getEnd().equals(end)) {
@@ -86,7 +86,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @throws RemoteException If the connection was lost
      */
     //TODO: Test this
-    public boolean scheduleEvent(User owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean scheduleEvent(Client owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
         boolean canSchedule = false;
         ArrayList<Calendar> calendars = new ArrayList<>();
 
@@ -117,7 +117,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
         // If we have attendees we are in a group event.
         // If this calendar owner is the same as the event owner then we are need to invite the attendees
-        if (attendees.size() != 0 && owner.getName().equals(this.owner.getName())) {
+        if (attendees.size() != 0 && owner.getUser().getName().equals(this.owner.getUser().getName())) {
             CalendarManager cm = new CalendarManagerImpl();
 
             for (User u : attendees) {
@@ -185,7 +185,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @throws RemoteException If the connection was lost
      */
     @Override
-    public boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
 
         /*
         * For each event x in the event list check to see:
@@ -221,12 +221,12 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      *
      * @return The user that owns the calendar
      */
-    public User getOwner() {
+    public Client getOwner() {
         return owner;
     }
 
-    public boolean startClock(User owner) {
-        if (owner.getName().equals(this.owner.getName())) {
+    public boolean startClock(Client owner) throws RemoteException{
+        if (owner.getUser().getName().equals(this.owner.getUser().getName())) {
             clockThread = new Clock(this);
             clockThread.start();
             return true;
