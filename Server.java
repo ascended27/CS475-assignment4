@@ -12,7 +12,7 @@ public class Server{
         try{
             System.setSecurityManager(new SecurityManager());
             System.out.println("Server: Registering Calendar Service");
-            CalendarManager cm = new CalendarManagerImpl();
+            CalendarManagerImpl cm = new CalendarManagerImpl();
             Naming.rebind("CalendarService",cm);
             System.out.println("Server: Ready...");
         } catch (Exception e){
