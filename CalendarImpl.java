@@ -51,6 +51,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
     protected CalendarImpl(User owner) throws RemoteException {
         this.owner = owner;
+        startClock(owner);
     }
 
     /**
