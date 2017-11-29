@@ -46,6 +46,7 @@ import java.util.List;
 public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
     public User owner;
+    private Thread clockThread;
     private ArrayList<Event> eventList;
 
     protected CalendarImpl(User owner) throws RemoteException {
@@ -208,10 +209,27 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
     /**
      * Used to retrieve the event list when another calendar is trying to schedule a group event
      *
-     * @return
+     * @return The list of events
      */
     public List<Event> getEventList() {
         return eventList;
     }
 
+    /**
+     * Used to retrieve the owner of the calendar
+     *
+     * @return The user that owns the calendar
+     */
+    public User getOwner() {
+        return owner;
+    }
+
+    public boolean startClock(User owner) {
+        if (owner.getName().equals(this.owner.getName())) {
+            clockThread = new Clock(this);
+            clockThread.start();
+            return true;
+        }
+        return false;
+    }
 }

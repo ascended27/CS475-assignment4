@@ -80,5 +80,9 @@ public interface Calendar extends Remote {
      */
     boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
 
+    boolean startClock(User owner);
+
     List<Event> getEventList();
+
+    User getOwner();
 }
