@@ -48,8 +48,8 @@ public interface Calendar extends Remote {
      * Retrieves event for passed user with passed start and end
      *
      * @param user  An attendee
-     * @param start
-     * @param end
+     * @param start The start time of the event to retrieve
+     * @param end   The stop time of the event to retrieve
      * @return The event
      */
     Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException;
@@ -68,7 +68,17 @@ public interface Calendar extends Remote {
      */
     boolean scheduleEvent(User owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
 
-    boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop) throws RemoteException;
+    /**
+     * Schedules an open event
+     *
+     * @param owner The owner of the event
+     * @param start The start time of the open event
+     * @param stop  The stop time of the open event
+     * @param type  Is the event public or private
+     * @return
+     * @throws RemoteException
+     */
+    boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
 
     List<Event> getEventList();
 }

@@ -1,4 +1,5 @@
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * ------- From the PDF ------------------------------
@@ -24,5 +25,5 @@ public interface Client extends Remote{
      *
      * @param event The event to notify the user with
      */
-    void notify(Event event);
+    void notify(Event event) throws RemoteException;
 }
