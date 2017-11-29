@@ -39,7 +39,7 @@
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface Calendar extends Remote {
@@ -56,9 +56,19 @@ public interface Calendar extends Remote {
 
     /**
      * Schedules an event with a list of attendees specified by users
-     * @param users
-     * @param event
-     * @return If the schedule is inserted successfully
+     *
+     * @param owner     The owner of the new event
+     * @param attendees The list of users that are attending
+     * @param title     The name of the new event
+     * @param start     The start time of the new event
+     * @param stop      The end time of the new event
+     * @param type      Is the event public or private
+     * @return
+     * @throws RemoteException
      */
-    boolean scheduleEvent(List<User> users, Event event) throws RemoteException;
+    boolean scheduleEvent(User owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
+
+    boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop) throws RemoteException;
+
+    List<Event> getEventList();
 }

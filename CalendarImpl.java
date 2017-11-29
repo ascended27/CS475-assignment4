@@ -39,33 +39,158 @@
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
-    protected CalendarImpl() throws RemoteException {
+    public User owner;
+    private ArrayList<Event> eventList;
+
+    protected CalendarImpl(User owner) throws RemoteException {
+        this.owner = owner;
     }
 
     /**
      * Retrieves event for passed user with passed start and end
      *
      * @param user  An attendee
-     * @param start
-     * @param end
+     * @param start The starting time of the event to retrieve
+     * @param end   The ending time of the event to retrieve
      * @return The event
      */
-    public Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException{
-        return null;
+    public Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException {
+        Event toReturn = null;
+        for (Event event : eventList) {
+            if (event.getStart().equals(start) && event.getEnd().equals(end)) {
+                toReturn = event;
+                break;
+            }
+        }
+        return toReturn;
     }
 
     /**
      * Schedules an event with a list of attendees specified by users
-     * @param users
-     * @param event
-     * @return If the schedule is inserted successfully
+     *
+     * @param owner     The owner of the new event
+     * @param attendees The list of users that are attending
+     * @param title     The name of the new event
+     * @param start     The start time of the new event
+     * @param stop      The end time of the new event
+     * @param type      Is the event public or private
+     * @return True if the event was scheduled, otherwise false
+     * @throws RemoteException If the connection was lost
      */
-    public boolean scheduleEvent(List<User> users, Event event) throws RemoteException{
+    //TODO: Test this
+    public boolean scheduleEvent(User owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+
+        /*
+         * If owner is the owner of this calendar then we are creating a new event for that user.
+         * If there are any attendees then we need to check to see if they are available for this event.
+         *      If they are then flip a flag saying everyone is good. */ //TODO: I didn't do this >.>
+        /*
+         * For each event x in this calendar. Check to see if there are any conflicting events with this one.
+         *      If there are then return false. This event can't be scheduled.
+         *      Otherwise if there are attendees and everyone is available then call this method on their calendars
+         *          with the same parameters. Then check this calendar's open events. If there is an open event that has
+         *          a start before this new event and an end after then split that open event and insert this new event
+         *          between. Otherwise the event would have to have the exact time range as the new event. So just copy
+         *          over the params for this call to that event.
+         */
+
+        // If we have attendees we are in a group event.
+        // If this calendar owner is the same as the event owner then we are need to invite the attendees
+        if (attendees.size() != 0 && owner.name.equals(this.owner.name)) {
+            boolean canSchedule = false;
+            CalendarManager cm = new CalendarManagerImpl();
+            ArrayList<Calendar> calendars = new ArrayList<>();
+
+            for (User u : attendees) {
+                calendars.add(cm.getCalendar(u));
+            }
+
+            for (Calendar cal : calendars) {
+                for (Event event : cal.getEventList()) {
+                    // If the event is open and it starts before or the same time as the new event
+                    // and it ends after or the same time as the new event
+                    if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getEnd().compareTo(stop) >= 0) {
+                        canSchedule = true;
+                    } else {
+                        canSchedule = false;
+                        break;
+                    }
+                }
+                if (!canSchedule) {
+                    // If canSchedule == false then this user is not available so abandon the event.
+                    break;
+                }
+            }
+            if (canSchedule) {
+                for (Calendar cal : calendars)
+                    cal.scheduleEvent(owner, attendees, title, stop, start, type);
+            } else return false;
+        }
+
+        // Schedule the event for this user
+        for (Event event : eventList) {
+            // If the event is open and matches the time range then just use this event
+            if (event.isOpen() && event.getStart().equals(start) && event.getEnd().equals(stop)) {
+                // Copy the values to the event
+                event.setOwner(owner);
+                event.setTitle(title);
+                event.setOpen(false);
+                event.setType(type);
+                event.setAttendees(attendees);
+                return true;
+            }
+            // If the event is open and has a start before the new event and a stop after the new event then split it
+            else if (event.isOpen() && event.getStart().compareTo(start) > 0 && event.getEnd().compareTo(stop) < 0) {
+                // Create two new events that are a split between the event and the new event
+                Event before = new Event(event.getTitle(), event.getStart(), start, event.getOwner(), null, true, event.isType());
+                Event after = new Event(event.getTitle(), stop, event.getEnd(), event.getOwner(), null, true, event.isType());
+                // Remove the old event
+                eventList.remove(event);
+                // Insert the split open event
+                eventList.add(before);
+                eventList.add(after);
+                // Add the new event
+                eventList.add(new Event(title, start, stop, owner, attendees, false, type));
+                return true;
+            }
+        }
         return false;
     }
+
+    /**
+     * @param owner The owner of the event to schedule, should match the owner of this calendar
+     * @param start The start time of the open event
+     * @param stop  The end time of the open event
+     * @return True if the event was scheduled, otherwise false
+     * @throws RemoteException If the connection was lost
+     */
+    @Override
+    public boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop) throws RemoteException {
+
+        /*
+        * For each event x in the event list check to see:
+        *       if x.start is within start and stop. If it is then
+        *           return false. The events conflict.
+        *       if x.end is within start and stop. If it is then
+        *           return false. The events conflict.
+        */
+
+        return false;
+    }
+
+    /**
+     * Used to retrieve the event list when another calendar is trying to schedule a group event
+     *
+     * @return
+     */
+    public List<Event> getEventList() {
+        return eventList;
+    }
+
 }
