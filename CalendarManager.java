@@ -1,6 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+
 /**
  * The Calendar Manager class will handle all
  * the different Calendar objects that are being
@@ -28,4 +29,5 @@ public interface CalendarManager extends Remote {
      */
     Calendar getCalendar(User user) throws RemoteException;
 
+	public Calendar makeCalendar(User user);
 }
