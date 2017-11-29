@@ -23,6 +23,16 @@ public class Event {
     // True for public False for private
     private boolean type;
 
+    /**
+     *
+     * @param title
+     * @param start
+     * @param end
+     * @param owner
+     * @param attendees
+     * @param type
+     * @param open
+     */
     public Event(String title, Timestamp start, Timestamp end, User owner, List<User> attendees,boolean type, boolean open) {
         this.title = title;
         this.start = start;
