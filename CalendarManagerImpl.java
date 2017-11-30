@@ -1,9 +1,7 @@
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Calendar Manager class will handle all
@@ -52,6 +50,7 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @throws RemoteException
      */
     public CalendarImpl getCalendar(Client user) throws RemoteException{
+
     	CalendarImpl toReturn = null;
 
         for(CalendarImpl cal : calendars){

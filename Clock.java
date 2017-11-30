@@ -14,7 +14,7 @@ public class Clock extends Thread {
     public void run() {
         // Do it until the thread is stopped
         try {
-            ArrayList<Event> eventList = (ArrayList) calendar.getEventList();
+            ArrayList<Event> eventList = (ArrayList<Event>) calendar.getEventList();
 
             while (true) {
                 // Get the current time
@@ -25,10 +25,10 @@ public class Clock extends Thread {
 
                 if (eventList != null && eventList.size() > 0)
                     for (Event event : eventList) {
-                        if (ts.compareTo(event.getStart()) >= 0) {
+                        if (ts.compareTo(event.getStart()) >= 0 && !event.hasPassed()) {
                             // Notify user
                             calendar.getOwner().notify(event);
-                            // TODO: Need to handle concurrency here to delete event from eventList.
+                            event.setPassed(true);
                         }
                     }
 

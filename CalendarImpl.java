@@ -63,7 +63,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @param end   The ending time of the event to retrieve
      * @return The event
      */
-    public Event retrieveEvent(Client user, Timestamp start, Timestamp end) throws RemoteException {
+    public synchronized Event retrieveEvent(Client user, Timestamp start, Timestamp end) throws RemoteException {
         Event toReturn = null;
         for (Event event : eventList) {
             if (event.getStart().equals(start) && event.getEnd().equals(end)) {
@@ -87,7 +87,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @throws RemoteException If the connection was lost
      */
     //TODO: Test this
-    public boolean scheduleEvent(Client owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public synchronized boolean scheduleEvent(Client owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
         boolean canSchedule = false;
         ArrayList<CalendarImpl> calendars = new ArrayList<>();
 
