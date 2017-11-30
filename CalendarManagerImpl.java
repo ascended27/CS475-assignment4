@@ -52,7 +52,9 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @throws RemoteException
      */
     public Calendar getCalendar(User user) throws RemoteException{
-        return null;
+        for(Calendar calendar: calendars)
+		{
+					
+		}
     }
-
 }
