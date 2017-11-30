@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,25 +7,25 @@ import java.util.List;
  * The Event class will contain information
  * about an event such as: Title, Name, Time,
  * and Attendees.
- *
+ * <p>
  * This class will need to be synchronous. The owner
  * may need to write to their calendar while another
  * user attempting to reading.
  */
-public class Event {
+public class Event implements Serializable {
 
     private String title;
     private Timestamp start;
     private Timestamp end;
-    private User owner;
-    private List<User> attendees;
+    private Client owner;
+    private List<Client> attendees;
     private boolean open;
 
     // True for public False for private
     private boolean type;
+    private boolean passed;
 
     /**
-     *
      * @param title
      * @param start
      * @param end
@@ -33,7 +34,7 @@ public class Event {
      * @param type
      * @param open
      */
-    public Event(String title, Timestamp start, Timestamp end, User owner, List<User> attendees,boolean type, boolean open) {
+    public Event(String title, Timestamp start, Timestamp end, Client owner, List<Client> attendees, boolean type, boolean open) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -41,62 +42,70 @@ public class Event {
         this.attendees = attendees;
         this.type = type;
         this.open = open;
+        this.passed = false;
     }
 
-    public String getTitle() {
+    public synchronized String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public synchronized void setTitle(String title) {
         this.title = title;
     }
 
-    public Timestamp getStart() {
+    public synchronized Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Timestamp start) {
+    public synchronized void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public Timestamp getEnd() {
+    public synchronized Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(Timestamp end) {
+    public synchronized void setEnd(Timestamp end) {
         this.end = end;
     }
 
-    public User getOwner() {
+    public synchronized Client getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public synchronized void setOwner(Client owner) {
         this.owner = owner;
     }
 
-    public List<User> getAttendees() {
+    public synchronized List<Client> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(List<User> attendees) {
+    public synchronized void setAttendees(List<Client> attendees) {
         this.attendees = attendees;
     }
 
-
-    public boolean isOpen() {
+    public synchronized boolean isOpen() {
         return open;
     }
 
-    public void setOpen(boolean open) {
+    public synchronized void setOpen(boolean open) {
         this.open = open;
     }
 
-    public boolean isType() {
+    public synchronized boolean isType() {
         return type;
     }
 
-    public void setType(boolean type) {
+    public synchronized void setType(boolean type) {
         this.type = type;
+    }
+
+    public synchronized boolean hasPassed() {
+        return this.passed;
+    }
+
+    public synchronized void setPassed(boolean val) {
+        this.passed = val;
     }
 }

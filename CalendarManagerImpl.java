@@ -1,9 +1,7 @@
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Calendar Manager class will handle all
@@ -22,10 +20,10 @@ import java.util.ArrayList;
  */
 public class CalendarManagerImpl extends UnicastRemoteObject implements CalendarManager {
 
-	List<Calendar> calendars;
-	private static CalendarManager theInstance;
+	List<CalendarImpl> calendars;
+	private static CalendarManagerImpl theInstance;
 
-	public Calendar makeCalendar(User user)
+	public Calendar makeCalendar(Client user)
 	{
 		return null;
 	}
@@ -51,10 +49,21 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @return The calendar
      * @throws RemoteException
      */
-    public Calendar getCalendar(User user) throws RemoteException{
-        for(Calendar calendar: calendars)
-		{
-					
-		}
+
+    public CalendarImpl getCalendar(Client user) throws RemoteException{
+
+    	CalendarImpl toReturn = null;
+
+        for(CalendarImpl cal : calendars){
+    	    if(cal.getOwner().getName().equals(user.getName())){
+    	        toReturn = cal;
+            }
+        }
+
+        if(toReturn == null){
+            toReturn = new CalendarImpl(user);
+        }
+
+        return toReturn;
     }
 }

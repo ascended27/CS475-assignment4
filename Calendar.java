@@ -52,7 +52,7 @@ public interface Calendar extends Remote {
      * @param end   The stop time of the event to retrieve
      * @return The event
      */
-    Event retrieveEvent(User user, Timestamp start, Timestamp end) throws RemoteException;
+    Event retrieveEvent(Client user, Timestamp start, Timestamp end) throws RemoteException;
 
     /**
      * Schedules an event with a list of attendees specified by users
@@ -66,7 +66,7 @@ public interface Calendar extends Remote {
      * @return
      * @throws RemoteException
      */
-    boolean scheduleEvent(User owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
+    boolean scheduleEvent(Client owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
 
     /**
      * Schedules an open event
@@ -78,7 +78,11 @@ public interface Calendar extends Remote {
      * @return
      * @throws RemoteException
      */
-    boolean insertOpenEvent(User owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
+    boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
 
-    List<Event> getEventList();
+    boolean startClock(Client owner) throws RemoteException;
+
+    List<Event> getEventList() throws RemoteException;
+
+    Client getOwner() throws RemoteException;
 }

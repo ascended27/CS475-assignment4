@@ -27,7 +27,7 @@ public interface CalendarManager extends Remote {
      * @return The calendar
      * @throws RemoteException
      */
-    Calendar getCalendar(User user) throws RemoteException;
+    Calendar getCalendar(Client user) throws RemoteException;
 
-	public Calendar makeCalendar(User user);
+	public Calendar makeCalendar(Client user) throws RemoteException;
 }
