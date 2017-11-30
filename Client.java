@@ -28,5 +28,7 @@ public interface Client extends Remote{
      */
     void notify(Event event) throws RemoteException;
 
-    User getUser() throws RemoteException;
+    String getName() throws RemoteException;
+
+    void setName(String name) throws RemoteException;
 }

@@ -51,6 +51,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
     protected CalendarImpl(ClientImpl owner) throws RemoteException {
         this.owner = owner;
+        this.eventList = new ArrayList<>();
         startClock(owner);
     }
 
@@ -86,7 +87,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @throws RemoteException If the connection was lost
      */
     //TODO: Test this
-    public boolean scheduleEvent(ClientImpl owner, List<User> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean scheduleEvent(ClientImpl owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
         boolean canSchedule = false;
         ArrayList<CalendarImpl> calendars = new ArrayList<>();
 
@@ -106,7 +107,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
         // Find an open event
         Event found = null;
         for (Event event : eventList) {
-            if (event.isOpen() && event.getStart().compareTo(start) >= 0 && event.getEnd().compareTo(stop) <= 0) {
+            if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getEnd().compareTo(stop) >= 0) {
                 found = event;
                 break;
             }
@@ -117,11 +118,11 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
         // If we have attendees we are in a group event.
         // If this calendar owner is the same as the event owner then we are need to invite the attendees
-        if (attendees.size() != 0 && owner.getUser().getName().equals(this.owner.getUser().getName())) {
+        if (attendees != null && attendees.size() != 0 && owner.getName().equals(this.owner.getName())) {
             CalendarManagerImpl cm = new CalendarManagerImpl();
 
-            for (User u : attendees) {
-                calendars.add(cm.getCalendar(u));
+            for (Client c : attendees) {
+                calendars.add(cm.getCalendar(c));
             }
 
             for (Calendar cal : calendars) {
@@ -160,10 +161,10 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
         }
 
         // If the event is open and has a start before the new event and a stop after the new event then split it
-        else if (found.isOpen() && found.getStart().compareTo(start) > 0 && found.getEnd().compareTo(stop) < 0) {
+        else if (found.isOpen() && found.getStart().compareTo(start) < 0 && found.getEnd().compareTo(stop) > 0) {
             // Create two new events that are a split between the event and the new event
-            Event before = new Event(found.getTitle(), found.getStart(), start, found.getOwner(), null, true, found.isType());
-            Event after = new Event(found.getTitle(), stop, found.getEnd(), found.getOwner(), null, true, found.isType());
+            Event before = new Event(found.getTitle(), found.getStart(), start, found.getOwner(), null, found.isType(), true);
+            Event after = new Event(found.getTitle(), stop, found.getEnd(), found.getOwner(), null, found.isType(), true);
             // Remove the old event
             eventList.remove(found);
             // Insert the split open event
@@ -194,14 +195,18 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
         *       if x.end is within start and stop. If it is then
         *           return false. The events conflict.
         */
-
-        for (Event event : eventList) {
-            // If event is within start and stop then we can't create an event
-            if (event.getStart().compareTo(start) < 0 && event.getStart().compareTo(stop) < 0 ||
-                    event.getEnd().compareTo(start) > 0 && event.getEnd().compareTo(stop) > 0) {
-                eventList.add(new Event("", start, stop, owner, null, type, true));
-                return true;
+        if (eventList.size() > 0) {
+            for (Event event : eventList) {
+                // If event is within start and stop then we can't create an event
+                if (event.getStart().compareTo(start) < 0 && event.getStart().compareTo(stop) < 0 ||
+                        event.getEnd().compareTo(start) > 0 && event.getEnd().compareTo(stop) > 0) {
+                    eventList.add(new Event("", start, stop, owner, null, type, true));
+                    return true;
+                }
             }
+        } else{
+            eventList.add(new Event("", start, stop, owner, null, type, true));
+            return true;
         }
 
         return false;
@@ -212,7 +217,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      *
      * @return The list of events
      */
-    public List<Event> getEventList() {
+    public ArrayList<Event> getEventList() {
         return eventList;
     }
 
@@ -225,8 +230,8 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
         return owner;
     }
 
-    public boolean startClock(ClientImpl owner) throws RemoteException{
-        if (owner.getUser().getName().equals(this.owner.getUser().getName())) {
+    public boolean startClock(ClientImpl owner) throws RemoteException {
+        if (owner.getName().equals(this.owner.getName())) {
             clockThread = new Clock(this);
             clockThread.start();
             return true;

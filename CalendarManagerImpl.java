@@ -25,7 +25,7 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
 	List<CalendarImpl> calendars;
 	private static CalendarManagerImpl theInstance;
 
-	public Calendar makeCalendar(User user)
+	public Calendar makeCalendar(Client user)
 	{
 		return null;
 	}
@@ -51,13 +51,20 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @return The calendar
      * @throws RemoteException
      */
-    public CalendarImpl getCalendar(User user) throws RemoteException{
-        return null;
-    }
+    public CalendarImpl getCalendar(Client user) throws RemoteException{
+    	CalendarImpl toReturn = null;
 
-	@Override
-	public CalendarImpl makeCalendar(Client user) throws RemoteException{
-		return null;
-	}
+        for(CalendarImpl cal : calendars){
+    	    if(cal.getOwner().getName().equals(user.getName())){
+    	        toReturn = cal;
+            }
+        }
+
+        if(toReturn == null){
+            toReturn = new CalendarImpl((ClientImpl) user);
+        }
+
+        return toReturn;
+    }
 
 }
