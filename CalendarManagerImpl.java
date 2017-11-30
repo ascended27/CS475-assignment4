@@ -35,7 +35,7 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
 		calendars = new ArrayList<>();
     }
 
-	public static CalendarManagerImpl getInstance() throws RemoteException
+	public static CalendarManager getInstance() throws RemoteException
 	{
 		if(theInstance == null)
 			theInstance = new CalendarManagerImpl();
@@ -61,7 +61,7 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
         }
 
         if(toReturn == null){
-            toReturn = new CalendarImpl((ClientImpl) user);
+            toReturn = new CalendarImpl(user);
         }
 
         return toReturn;

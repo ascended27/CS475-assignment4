@@ -45,11 +45,11 @@ import java.util.List;
 
 public class CalendarImpl extends UnicastRemoteObject implements Calendar {
 
-    public ClientImpl owner;
+    public Client owner;
     private Thread clockThread;
     private ArrayList<Event> eventList;
 
-    protected CalendarImpl(ClientImpl owner) throws RemoteException {
+    protected CalendarImpl(Client owner) throws RemoteException {
         this.owner = owner;
         this.eventList = new ArrayList<>();
         startClock(owner);
@@ -63,7 +63,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @param end   The ending time of the event to retrieve
      * @return The event
      */
-    public Event retrieveEvent(ClientImpl user, Timestamp start, Timestamp end) throws RemoteException {
+    public Event retrieveEvent(Client user, Timestamp start, Timestamp end) throws RemoteException {
         Event toReturn = null;
         for (Event event : eventList) {
             if (event.getStart().equals(start) && event.getEnd().equals(end)) {
@@ -87,7 +87,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @throws RemoteException If the connection was lost
      */
     //TODO: Test this
-    public boolean scheduleEvent(ClientImpl owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean scheduleEvent(Client owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
         boolean canSchedule = false;
         ArrayList<CalendarImpl> calendars = new ArrayList<>();
 
@@ -185,8 +185,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @return True if the event was scheduled, otherwise false
      * @throws RemoteException If the connection was lost
      */
-    @Override
-    public boolean insertOpenEvent(ClientImpl owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
 
         /*
         * For each event x in the event list check to see:
@@ -226,11 +225,11 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      *
      * @return The user that owns the calendar
      */
-    public ClientImpl getOwner() {
+    public Client getOwner() {
         return owner;
     }
 
-    public boolean startClock(ClientImpl owner) throws RemoteException {
+    public boolean startClock(Client owner) throws RemoteException {
         if (owner.getName().equals(this.owner.getName())) {
             clockThread = new Clock(this);
             clockThread.start();

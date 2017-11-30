@@ -1,3 +1,4 @@
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -7,8 +8,50 @@ public class ClientUi {
 
     public static void main(String[] args) {
         System.out.println("args.length: " + args.length);
-        if (args.length == 1) {
-            try {
+        if (args.length < 1) {
+            System.out.println("usage: ClientImpl <username>");
+            System.exit(1);
+        }
+
+        String name = args[0];
+
+        // Install security manager.  This is only necessary
+        // if the remote object's client stub does not reside
+        // on the client machine (it resides on the server).
+        //  System.setSecurityManager(new SecurityManager());
+
+        // Get a remote reference to the EchoImpl class
+        String strName = "rmi://localhost/CalendarService";
+//      String strName = "rmi://localhost:2934/EchoService";
+        System.out.println("Client: Looking up " + strName + "...");
+        CalendarManager remCM = null;
+
+        try {
+            remCM = (CalendarManager) Naming.lookup(strName);
+        } catch (Exception e) {
+            System.out.println("Client: Exception thrown looking up " + strName);
+            System.exit(1);
+        }
+
+        try {
+            System.setSecurityManager(new SecurityManager());
+            System.out.println("Server: Registering Client Service");
+            ClientImpl client = new ClientImpl(name);
+            Naming.rebind("ClientService",client);
+            System.out.println("Server: Ready...");
+
+            Calendar cal = remCM.getCalendar(client);
+            System.out.println("Owner: " + cal.getOwner().getName());
+        } catch (Exception e) {
+            System.out.println("Client: Exception thrown calling getCalendar: " + e);
+            System.exit(1);
+        }
+    }
+
+}
+
+/*
+try {
                 ClientImpl client = new ClientImpl(args[0]);
                 CalendarManager cm = CalendarManagerImpl.getInstance();
 
@@ -39,9 +82,4 @@ public class ClientUi {
                 System.out.println("Error: " + e);
             }
 
-        } else {
-            System.out.println("usage: ClientImpl <username>");
-        }
-    }
-
-}
+ */
