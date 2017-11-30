@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * may need to write to their calendar while another
  * user attempting to reading.
  */
-public class Event {
+public class Event implements Serializable {
 
     private String title;
     private Timestamp start;
