@@ -63,8 +63,21 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
 
         if(toReturn == null){
             toReturn = new CalendarImpl(user);
+			calendars.add(toReturn);
         }
+
 
         return toReturn;
     }
+
+    @Override
+    public List<Client> allUsers() throws RemoteException
+	{
+		List<Client> users = new ArrayList<>();
+
+		for (Calendar calendar: calendars)
+			users.add(calendar.getOwner());
+
+		return users;
+	}
 }

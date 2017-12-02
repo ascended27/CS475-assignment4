@@ -1,5 +1,6 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 
 /**
@@ -29,5 +30,7 @@ public interface CalendarManager extends Remote {
      */
     Calendar getCalendar(Client user) throws RemoteException;
 
-	public Calendar makeCalendar(Client user) throws RemoteException;
+    Calendar makeCalendar(Client user) throws RemoteException;
+
+    List<Client> allUsers() throws RemoteException;
 }
