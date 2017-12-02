@@ -50,7 +50,8 @@ public class CalendarManagerImpl extends UnicastRemoteObject implements Calendar
      * @throws RemoteException
      */
 
-    public CalendarImpl getCalendar(Client user) throws RemoteException{
+    public CalendarImpl getCalendar(Client user) throws RemoteException
+	{
 
     	CalendarImpl toReturn = null;
 
