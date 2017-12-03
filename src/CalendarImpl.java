@@ -86,7 +86,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @return True if the event was scheduled, otherwise false
      * @throws RemoteException If the connection was lost
      */
-    //TODO: Test this
+    //TODO: Test already made. Debug equality of Events that are made because of a group Event
     public synchronized boolean scheduleEvent(Client owner, List<Client> attendees, String title, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
         boolean canSchedule = false;
         ArrayList<CalendarImpl> calendars = new ArrayList<>();
