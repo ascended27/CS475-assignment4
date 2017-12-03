@@ -1,3 +1,5 @@
+package src;
+
 /*
  * The Calendar class represents the calendar object
  * that each user uses to schedule events. This class

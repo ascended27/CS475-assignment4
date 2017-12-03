@@ -1,9 +1,11 @@
+package src;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * ------- From the PDF ------------------------------
- *  The User Interface program lets the user perform the operations
+ * The User Interface program lets the user perform the operations
  * defined in the previous section. In particular, this program
  * presents the user with an interface that permits her to view
  * calendars, to modify appropriate events, and to schedule group
@@ -19,7 +21,7 @@ import java.rmi.RemoteException;
  * it is relatively straightforward to design a simple GUI for this application
  * ---------------------------------------------------
  */
-public interface Client extends Remote{
+public interface Client extends Remote {
 
     /**
      * Notifies the User that an event has started.
