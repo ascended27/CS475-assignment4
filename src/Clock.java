@@ -32,20 +32,15 @@ public class Clock extends Thread {
                 // Look for events that start at this time
 
                 if (eventList.size() > 0)
-                    try {
-                        rwLock.writeLock().lock();
-                        for (Event event : eventList) {
-                            if (ts.compareTo(event.getStart()) >= 0 && !event.hasPassed()) {
-                                // Notify user
-                                calendar.getOwner().notify(event);
+                    for (Event event : eventList) {
+                        if (ts.compareTo(event.getStart()) >= 0 && !event.hasPassed()) {
+                            // Notify user
+                            calendar.getOwner().notify(event);
 
-                                event.setPassed(true);
-
-                            }
+                            event.setPassed(true);
 
                         }
-                    } finally {
-                        rwLock.writeLock().unlock();
+
                     }
                 // Sleep the thread for 5 seconds then start over
                 try {
