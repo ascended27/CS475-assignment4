@@ -43,6 +43,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public interface Calendar extends Remote {
 
@@ -84,7 +85,7 @@ public interface Calendar extends Remote {
 
     boolean startClock(Client owner) throws RemoteException;
 
-    List<Event> getEventList() throws RemoteException;
+    ConcurrentLinkedQueue<Event> getEventList() throws RemoteException;
 
     Client getOwner() throws RemoteException;
 }

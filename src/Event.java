@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * The Event class will contain information
@@ -27,6 +29,8 @@ public class Event implements Serializable {
     private boolean type;
     private boolean passed;
 
+    public ReadWriteLock rwLock = new ReentrantReadWriteLock();
+
     /**
      * @param title
      * @param start
@@ -47,67 +51,163 @@ public class Event implements Serializable {
         this.passed = false;
     }
 
-    public synchronized String getTitle() {
-        return title;
+    public String getTitle() {
+        String toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = title;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String title) {
+        try {
+            rwLock.writeLock().lock();
+            this.title = title;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized Timestamp getStart() {
-        return start;
+    public Timestamp getStart() {
+        Timestamp toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = start;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setStart(Timestamp start) {
-        this.start = start;
+    public void setStart(Timestamp start) {
+        try {
+            rwLock.writeLock().lock();
+            this.start = start;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized Timestamp getEnd() {
-        return end;
+    public Timestamp getEnd() {
+        Timestamp toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = end;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setEnd(Timestamp end) {
-        this.end = end;
+    public void setEnd(Timestamp end) {
+        try {
+            rwLock.writeLock().lock();
+            this.end = end;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized Client getOwner() {
-        return owner;
+    public Client getOwner() {
+        Client toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = owner;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setOwner(Client owner) {
-        this.owner = owner;
+    public void setOwner(Client owner) {
+        try {
+            rwLock.writeLock().lock();
+            this.owner = owner;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized List<Client> getAttendees() {
-        return attendees;
+    public List<Client> getAttendees() {
+        List<Client> toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = attendees;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setAttendees(List<Client> attendees) {
-        this.attendees = attendees;
+    public void setAttendees(List<Client> attendees) {
+        try {
+            rwLock.writeLock().lock();
+            this.attendees = attendees;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized boolean isOpen() {
-        return open;
+    public boolean isOpen() {
+        boolean toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = open;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setOpen(boolean open) {
-        this.open = open;
+    public void setOpen(boolean open) {
+        try {
+            rwLock.writeLock().lock();
+            this.open = open;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized boolean isType() {
-        return type;
+    public boolean isType() {
+        boolean toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = type;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setType(boolean type) {
-        this.type = type;
+    public void setType(boolean type) {
+        try {
+            rwLock.writeLock().lock();
+            this.type = type;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
-    public synchronized boolean hasPassed() {
-        return this.passed;
+    public boolean hasPassed() {
+        boolean toReturn;
+        try {
+            rwLock.readLock().lock();
+            toReturn = passed;
+            return toReturn;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 
-    public synchronized void setPassed(boolean val) {
-        this.passed = val;
+    public void setPassed(boolean passed) {
+        try {
+            rwLock.writeLock().lock();
+            this.passed = passed;
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 }

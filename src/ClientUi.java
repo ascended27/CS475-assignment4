@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientUi {
 
@@ -57,7 +58,7 @@ public class ClientUi {
             System.out.println("Event Scheduled: " + cal.scheduleEvent(client, new ArrayList<>(), "Test", eventStart, eventStop, false));
 
             // Print all the events
-            ArrayList<Event> events = (ArrayList<Event>) cal.getEventList();
+            ConcurrentLinkedQueue<Event> events = cal.getEventList();
             for (Event event : events) {
                 if (event.isOpen())
                     System.out.printf("Open Event: \n\tStart: %s\n\tStop: %s\n\n", event.getStart().toString(), event.getEnd().toString());

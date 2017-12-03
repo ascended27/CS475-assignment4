@@ -3,10 +3,16 @@ package src;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Clock extends Thread {
 
     private Calendar calendar;
+
+    private ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     public Clock(Calendar calendar) {
         this.calendar = calendar;
@@ -16,7 +22,7 @@ public class Clock extends Thread {
     public void run() {
         // Do it until the thread is stopped
         try {
-            ArrayList<Event> eventList = (ArrayList<Event>) calendar.getEventList();
+            ConcurrentLinkedQueue<Event> eventList = calendar.getEventList();
 
             while (true) {
                 // Get the current time
@@ -25,15 +31,22 @@ public class Clock extends Thread {
 
                 // Look for events that start at this time
 
-                if (eventList != null && eventList.size() > 0)
-                    for (Event event : eventList) {
-                        if (ts.compareTo(event.getStart()) >= 0 && !event.hasPassed()) {
-                            // Notify user
-                            calendar.getOwner().notify(event);
-                            event.setPassed(true);
-                        }
-                    }
+                if (eventList.size() > 0)
+                    try {
+                        rwLock.writeLock().lock();
+                        for (Event event : eventList) {
+                            if (ts.compareTo(event.getStart()) >= 0 && !event.hasPassed()) {
+                                // Notify user
+                                calendar.getOwner().notify(event);
 
+                                event.setPassed(true);
+
+                            }
+
+                        }
+                    } finally {
+                        rwLock.writeLock().unlock();
+                    }
                 // Sleep the thread for 5 seconds then start over
                 try {
                     sleep(5000);
@@ -41,7 +54,10 @@ public class Clock extends Thread {
                     System.out.println("Clock was interrupted for User: " + calendar.getOwner());
                 }
             }
-        } catch (RemoteException e) {
+        } catch (
+                RemoteException e)
+
+        {
             System.out.println("Remote Exception: " + e);
         }
     }
