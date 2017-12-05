@@ -24,6 +24,7 @@ public class Clock extends Thread {
         try {
             ConcurrentLinkedQueue<Event> eventList = calendar.getEventList();
 
+
             while (true) {
                 // Get the current time
                 Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -47,6 +48,7 @@ public class Clock extends Thread {
                     sleep(5000);
                 } catch (InterruptedException e) {
                     System.out.println("Clock was interrupted for User: " + calendar.getOwner());
+                    System.exit(1);
                 }
             }
         } catch (
