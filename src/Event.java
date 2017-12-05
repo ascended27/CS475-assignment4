@@ -2,7 +2,6 @@ package src;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,7 +19,7 @@ public class Event implements Serializable {
 
     private String title;
     private Timestamp start;
-    private Timestamp end;
+    private Timestamp stop;
     private Client owner;
     private List<Client> attendees;
     private boolean open;
@@ -34,16 +33,16 @@ public class Event implements Serializable {
     /**
      * @param title
      * @param start
-     * @param end
+     * @param stop
      * @param owner
      * @param attendees
      * @param type
      * @param open
      */
-    public Event(String title, Timestamp start, Timestamp end, Client owner, List<Client> attendees, boolean type, boolean open) {
+    public Event(String title, Timestamp start, Timestamp stop, Client owner, List<Client> attendees, boolean type, boolean open) {
         this.title = title;
         this.start = start;
-        this.end = end;
+        this.stop = stop;
         this.owner = owner;
         this.attendees = attendees;
         this.type = type;
@@ -91,21 +90,21 @@ public class Event implements Serializable {
         }
     }
 
-    public Timestamp getEnd() {
+    public Timestamp getStop() {
         Timestamp toReturn;
         try {
             rwLock.readLock().lock();
-            toReturn = end;
+            toReturn = stop;
             return toReturn;
         } finally {
             rwLock.readLock().unlock();
         }
     }
 
-    public void setEnd(Timestamp end) {
+    public void setStop(Timestamp stop) {
         try {
             rwLock.writeLock().lock();
-            this.end = end;
+            this.stop = stop;
         } finally {
             rwLock.writeLock().unlock();
         }

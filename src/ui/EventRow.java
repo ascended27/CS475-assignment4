@@ -1,51 +1,49 @@
 package src.ui;
 
-import javafx.beans.property.SimpleStringProperty;
+import java.sql.Timestamp;
 
 public class EventRow {
-    private final SimpleStringProperty ownerName;
-    private final SimpleStringProperty start;
-    private final SimpleStringProperty title;
+    private String ownerName;
+    private String title;
+    private Timestamp start;
+    private Timestamp stop;
 
-    public EventRow(String ownerName, String start, String title) {
-        this.ownerName = new SimpleStringProperty(ownerName);
-        this.start = new SimpleStringProperty(start);
-        this.title = new SimpleStringProperty(title);
+    public EventRow(String ownerName, String title, Timestamp start, Timestamp stop) {
+        this.ownerName = ownerName;
+        this.title = title;
+        this.start = start;
+        this.stop = stop;
     }
 
     public String getOwnerName() {
-        return ownerName.get();
-    }
-
-    public SimpleStringProperty ownerNameProperty() {
         return ownerName;
     }
 
     public void setOwnerName(String ownerName) {
-        this.ownerName.set(ownerName);
-    }
-
-    public String getStart() {
-        return start.get();
-    }
-
-    public SimpleStringProperty startProperty() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start.set(start);
+        this.ownerName = ownerName;
     }
 
     public String getTitle() {
-        return title.get();
-    }
-
-    public SimpleStringProperty titleProperty() {
         return title;
     }
 
     public void setTitle(String title) {
-        this.title.set(title);
+        this.title = title;
+    }
+
+    public Timestamp getStart() {
+        return start;
+    }
+
+    public void setStart(Timestamp start) {
+        this.start = start;
+    }
+
+    public Timestamp getStop() {
+        return stop;
+    }
+
+    public void setStop(Timestamp stop) {
+        this.stop = stop;
     }
 }

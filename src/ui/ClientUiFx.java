@@ -29,7 +29,7 @@ public class ClientUiFx extends Application {
         try {
             utils = Util.getInstance();
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ClientUiFXML.fxml"));
-            Scene scene = new Scene(root, 745, 500);
+            Scene scene = new Scene(root, 800, 500);
             primaryStage.setTitle("Scheduler");
             primaryStage.setResizable(false);
             primaryStage.setOnCloseRequest(e -> close(primaryStage));

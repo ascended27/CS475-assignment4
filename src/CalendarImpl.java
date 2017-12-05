@@ -74,7 +74,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
             rwLock.readLock().lock();
             Event toReturn = null;
             for (Event event : eventList) {
-                if (event.getStart().equals(start) && event.getEnd().equals(end)) {
+                if (event.getStart().equals(start) && event.getStop().equals(end)) {
                     toReturn = event;
                     break;
                 }
@@ -120,7 +120,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
             // Find an open event
             Event found = null;
             for (Event event : eventList) {
-                if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getEnd().compareTo(stop) >= 0) {
+                if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getStop().compareTo(stop) >= 0) {
                     found = event;
                     break;
                 }
@@ -142,7 +142,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
                     for (Event event : cal.getEventList()) {
                         // If the event is open and it starts before or the same time as the new event
                         // and it ends after or the same time as the new event
-                        if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getEnd().compareTo(stop) >= 0) {
+                        if (event.isOpen() && event.getStart().compareTo(start) <= 0 && event.getStop().compareTo(stop) >= 0) {
                             canSchedule = true;
                         } else {
                             canSchedule = false;
@@ -163,7 +163,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
             }
 
             // If the event is open and matches the time range then just use this event
-            if (found.isOpen() && found.getStart().equals(start) && found.getEnd().equals(stop)) {
+            if (found.isOpen() && found.getStart().equals(start) && found.getStop().equals(stop)) {
                 // Copy the values to the event
                 found.setOwner(owner);
                 found.setTitle(title);
@@ -174,10 +174,10 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
             }
 
             // If the event is open and has a start before the new event and a stop after the new event then split it
-            else if (found.isOpen() && found.getStart().compareTo(start) < 0 && found.getEnd().compareTo(stop) > 0) {
+            else if (found.isOpen() && found.getStart().compareTo(start) < 0 && found.getStop().compareTo(stop) > 0) {
                 // Create two new events that are a split between the event and the new event
                 Event before = new Event(found.getTitle(), found.getStart(), start, found.getOwner(), null, found.isType(), true);
-                Event after = new Event(found.getTitle(), stop, found.getEnd(), found.getOwner(), null, found.isType(), true);
+                Event after = new Event(found.getTitle(), stop, found.getStop(), found.getOwner(), null, found.isType(), true);
                 // Remove the old event
                 eventList.remove(found);
                 // Insert the split open event
@@ -216,8 +216,8 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
                 for (Event event : eventList) {
                     // If event is within start and stop then we can't create an event
                     if (event.getStart().compareTo(start) < 0 && event.getStart().compareTo(stop) < 0 ||
-                            event.getEnd().compareTo(start) > 0 && event.getEnd().compareTo(stop) > 0) {
-                        eventList.add(new Event("", start, stop, owner, null, type, true));
+                            event.getStop().compareTo(start) > 0 && event.getStop().compareTo(stop) > 0) {
+                        eventList.add(new Event("Open Event", start, stop, owner, null, type, true));
                         return true;
                     }
                 }

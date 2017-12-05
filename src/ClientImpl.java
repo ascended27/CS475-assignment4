@@ -35,10 +35,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
      */
     public void notify(Event event) throws RemoteException {
         if(event.isOpen())
-            System.out.printf("Open Event: \n\tStart: %s\n\tStop: %s\n\n", event.getStart().toString(), event.getEnd().toString());
+            System.out.printf("Open Event: \n\tStart: %s\n\tStop: %s\n\n", event.getStart().toString(), event.getStop().toString());
         else {
             System.out.printf("Event: %s\n\tStart: %s\n\tStop: %s\n\tOwner: %s\n\tOpen: %b\n\tPublic: %b\n\tAttendees: %s\n\n",
-                    event.getTitle(), event.getStart().toString(), event.getEnd().toString(),
+                    event.getTitle(), event.getStart().toString(), event.getStop().toString(),
                     event.getOwner().getName(), event.isOpen(), event.isType(), event.getAttendees().toString());
         }
 

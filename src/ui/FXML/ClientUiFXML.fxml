@@ -22,9 +22,10 @@
                             <children>
                                 <TableView fx:id="table" prefHeight="372.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columns>
-                                        <TableColumn fx:id="tableOwner" minWidth="150.0" prefWidth="150.0" text="Owner" />
-                                        <TableColumn fx:id="tableTitle" minWidth="150.0" prefWidth="150.0" text="Title" />
-                                        <TableColumn fx:id="tableStart" minWidth="150.0" prefWidth="150.0" text="Start" />
+                                        <TableColumn fx:id="tableOwner" minWidth="99.0" prefWidth="118.0" text="Owner" />
+                                        <TableColumn fx:id="tableTitle" minWidth="133.0" prefWidth="133.0" text="Title" />
+                                        <TableColumn fx:id="tableStart" minWidth="0.0" prefWidth="137.0" text="Start" />
+                              <TableColumn fx:id="tableEnd" minWidth="150.0" prefWidth="212.0" text="End" />
                                     </columns>
                                 </TableView>
                             </children>
