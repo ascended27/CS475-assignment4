@@ -85,6 +85,8 @@ public interface Calendar extends Remote {
 
     boolean startClock(Client owner) throws RemoteException;
 
+    void killClock(Client owner) throws RemoteException;
+
     ConcurrentLinkedQueue<Event> getEventList() throws RemoteException;
 
     Client getOwner() throws RemoteException;
