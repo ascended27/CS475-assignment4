@@ -77,11 +77,10 @@ public interface Calendar extends Remote {
      * @param owner The owner of the event
      * @param start The start time of the open event
      * @param stop  The stop time of the open event
-     * @param type  Is the event public or private
      * @return
      * @throws RemoteException
      */
-    boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException;
+    boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop) throws RemoteException;
 
     boolean startClock(Client owner) throws RemoteException;
 

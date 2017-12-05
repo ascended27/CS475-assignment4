@@ -202,7 +202,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
      * @return True if the event was scheduled, otherwise false
      * @throws RemoteException If the connection was lost
      */
-    public boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop, boolean type) throws RemoteException {
+    public boolean insertOpenEvent(Client owner, Timestamp start, Timestamp stop) throws RemoteException {
         try {
             rwLock.writeLock().lock();
         /*
@@ -217,12 +217,12 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
                     // If event is within start and stop then we can't create an event
                     if (event.getStart().compareTo(start) < 0 && event.getStart().compareTo(stop) < 0 ||
                             event.getStop().compareTo(start) > 0 && event.getStop().compareTo(stop) > 0) {
-                        eventList.add(new Event("Open Event", start, stop, owner, null, type, true));
+                        eventList.add(new Event("Open Event", start, stop, owner, null, false, true));
                         return true;
                     }
                 }
             } else {
-                eventList.add(new Event("", start, stop, owner, null, type, true));
+                eventList.add(new Event("", start, stop, owner, null, false, true));
                 return true;
             }
 

@@ -1,8 +1,18 @@
 package src.ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import src.Client;
+import src.ClientImpl;
+import src.Event;
+
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class NewEventController {
     @FXML
@@ -30,19 +40,87 @@ public class NewEventController {
     @FXML
     public Button removeClient;
 
+    private Util utils;
+    private ObservableList<String> selectedClientsList = FXCollections.observableArrayList();
+    private ObservableList<String> notSelectedClientsList = FXCollections.observableArrayList();
+
+    public NewEventController() throws RemoteException {
+    }
+
+    @FXML
+    public void initialize() {
+        utils = Util.getInstance();
+
+        for (Client c : utils.getUsers()) {
+            try {
+                if (!c.getName().equals(utils.getOwner().getName())) {
+                    notSelectedClientsList.add(c.getName());
+                }
+            } catch (RemoteException e) {
+                AlertBox.display("Error", "Failed to load users");
+            }
+        }
+
+        clientList.setItems(notSelectedClientsList);
+        selectedClients.setItems(selectedClientsList);
+    }
+
     public void cancel(MouseEvent mouseEvent) {
-        //TODO: Close window
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     public void save(MouseEvent mouseEvent) {
-        //TODO: Save Event
+        if (!allFilledIn()) {
+            AlertBox.display("Error", "All text fields must be filled in");
+        } else {
+            try {
+                String title = titleTF.getText();
+                Timestamp start = utils.convertTime(startTF.getText());
+                Timestamp stop = utils.convertTime(startTF.getText());
+                boolean isPrivate = yesPrivate.isSelected();
+                ArrayList<Client> attendees = new ArrayList<>();
+
+                for (String user : selectedClientsList) {
+                    attendees.add(new ClientImpl(user));
+                }
+
+                if (!utils.scheduleEvent(new Event(title, start, stop, utils.getOwner(), attendees, isPrivate, false)))
+                    AlertBox.display("Error", "Failed to save event");
+
+                Stage stage = (Stage) savedButton.getScene().getWindow();
+                stage.close();
+            } catch (RemoteException e) {
+                AlertBox.display("Error", "Failed to save event");
+            }
+        }
     }
 
     public void moveClientRight(MouseEvent mouseEvent) {
-        //TODO: Move client from clientList to selectedClients
+        String selected = (String) clientList.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < notSelectedClientsList.size(); i++) {
+            if (notSelectedClientsList.get(i).equals(selected)) {
+                notSelectedClientsList.remove(i);
+                selectedClientsList.add(selected);
+                break;
+            }
+        }
+        clientList.getSelectionModel().clearSelection();
     }
 
     public void moveClientLeft(MouseEvent mouseEvent) {
-        //TODO: Move client from selectedClients to clientList
+        String selected = (String) selectedClients.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < selectedClientsList.size(); i++) {
+            if (selectedClientsList.get(i).equals(selected)) {
+                selectedClientsList.remove(i);
+                notSelectedClientsList.add(selected);
+                break;
+            }
+        }
+        selectedClients.getSelectionModel().clearSelection();
+    }
+
+    private boolean allFilledIn() {
+        return !startTF.getText().isEmpty() && !stopTF.getText().isEmpty() && !titleTF.getText().isEmpty();
     }
 }

@@ -3,8 +3,13 @@ package src.ui;
 import javafx.collections.ObservableList;
 import src.*;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Util {
@@ -68,7 +73,7 @@ public class Util {
     public boolean insertOpenEvent(Event e) {
         try {
             if (owner != null) {
-                boolean toReturn = cm.getCalendar(owner).insertOpenEvent(e.getOwner(), e.getStart(), e.getStop(), e.isType());
+                boolean toReturn = cm.getCalendar(owner).insertOpenEvent(e.getOwner(), e.getStart(), e.getStop());
                 if (toReturn && observableList != null)
                     observableList.add(new EventRow(e.getOwner().getName(), e.getTitle(), e.getStart(), e.getStop()));
                 return toReturn;
@@ -94,6 +99,14 @@ public class Util {
         }
     }
 
+    public ArrayList<Client> getUsers(){
+        try {
+            return (ArrayList<Client>) cm.allUsers();
+        } catch (RemoteException e) {
+            return new ArrayList<>();
+        }
+    }
+
     public boolean checkUser(String username) {
         try {
             for (Client user : cm.allUsers()) {
@@ -108,6 +121,20 @@ public class Util {
             return true;
         } catch (RemoteException e) {
             return false;
+        }
+    }
+
+
+    public Timestamp convertTime(String time) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+            Timestamp toReturn;
+            Date parsedDate;
+            parsedDate = dateFormat.parse(time);
+            toReturn = new java.sql.Timestamp(parsedDate.getTime());
+            return toReturn;
+        } catch (ParseException e) {
+            return null;
         }
     }
 
