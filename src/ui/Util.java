@@ -53,7 +53,6 @@ public class Util {
 
                 boolean toReturn = cm.getCalendar(owner).scheduleEvent(e.getOwner(), e.getAttendees(), e.getTitle(), e.getStart(), e.getStop(), e.isType());
 
-                // May split an open event so just clear them all out and replace them
                 if (toReturn && observableList != null) {
                     observableList.clear();
                     for (Event event : cm.getCalendar(owner).getEventList()) {
