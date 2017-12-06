@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -17,34 +17,20 @@
             <Insets left="25.0" />
           </GridPane.margin>
         </Text>
-        <Label text="Private Event:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-        <Label text="Start:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-        <RadioButton fx:id="yesPrivate" mnemonicParsing="false" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
-          <toggleGroup>
-            <ToggleGroup fx:id="privateGroup" />
-          </toggleGroup>
-          <GridPane.margin>
-            <Insets left="10.0" />
-          </GridPane.margin>
-        </RadioButton>
-        <RadioButton fx:id="noPrivate" mnemonicParsing="false" selected="true" text="No" toggleGroup="$privateGroup" GridPane.columnIndex="1" GridPane.rowIndex="1">
-          <GridPane.margin>
-            <Insets left="75.0" />
-          </GridPane.margin>
-        </RadioButton>
-        <TextField fx:id="startTF" prefWidth="200.0" promptText="MM/DD/YYYY HH:MM" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label text="Start:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+        <TextField fx:id="startTF" prefWidth="200.0" promptText="MM/DD/YYYY HH:MM" GridPane.columnIndex="1" GridPane.rowIndex="1">
           <GridPane.margin>
             <Insets right="10.0" fx:id="x1" />
           </GridPane.margin>
         </TextField>
-        <TextField fx:id="stopTF" prefWidth="200.0" promptText="MM/DD/YYYY HH:MM" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="3" />
-        <Label text="Stop:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-        <Button fx:id="cancelButton" mnemonicParsing="false" onMouseClicked="#cancel" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+        <TextField fx:id="stopTF" prefWidth="200.0" promptText="MM/DD/YYYY HH:MM" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="2" />
+        <Label text="Stop:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+        <Button fx:id="cancelButton" mnemonicParsing="false" onMouseClicked="#cancel" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
           <GridPane.margin>
             <Insets />
           </GridPane.margin>
         </Button>
-        <Button fx:id="savedButton" mnemonicParsing="false" onMouseClicked="#save" prefWidth="67.0" text="Save" wrapText="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+        <Button fx:id="savedButton" mnemonicParsing="false" onMouseClicked="#save" prefWidth="67.0" text="Save" wrapText="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
           <GridPane.margin>
             <Insets right="75.0" />
           </GridPane.margin>
@@ -56,7 +42,6 @@
       </columnConstraints>
       <rowConstraints>
         <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />

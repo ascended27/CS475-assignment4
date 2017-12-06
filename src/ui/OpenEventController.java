@@ -12,13 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OpenEventController {
-
-    @FXML
-    public ToggleGroup privateGroup;
-    @FXML
-    public RadioButton yesPrivate;
-    @FXML
-    public RadioButton noPrivate;
     @FXML
     public TextField startTF;
     @FXML
