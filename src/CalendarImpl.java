@@ -269,8 +269,8 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
         return false;
     }
 
-    public void killClock(Client owner) throws RemoteException{
-        if(owner.getName().equals(this.owner.getName())){
+    public void killClock(Client owner) throws RemoteException {
+        if (owner.getName().equals(this.owner.getName())) {
             clockThread.interrupt();
         }
     }

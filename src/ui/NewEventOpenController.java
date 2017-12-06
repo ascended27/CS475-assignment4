@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,7 +29,7 @@ public class NewEventOpenController {
         try {
             Parent root;
             Stage window = new Stage();
-            if(yesOpen.isSelected())
+            if (yesOpen.isSelected())
                 root = FXMLLoader.load(getClass().getResource("FXML/OpenEvent.fxml"));
             else
                 root = FXMLLoader.load(getClass().getResource("FXML/NewEvent.fxml"));
@@ -41,7 +43,7 @@ public class NewEventOpenController {
             stage.close();
             window.show();
         } catch (IOException e) {
-            AlertBox.display("Error","Failed to open new event");
+            AlertBox.display("Error", "Failed to open new event");
         }
     }
 

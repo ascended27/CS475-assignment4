@@ -11,10 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import src.*;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
 public class ClientUiFx extends Application {
 
@@ -33,7 +31,6 @@ public class ClientUiFx extends Application {
             primaryStage.setTitle("Scheduler");
             primaryStage.setResizable(false);
             primaryStage.setOnCloseRequest(e -> close(primaryStage));
-//            primaryStage.setScene(scene);
 
             // First get username and client manager
             GridPane grid = new GridPane();
