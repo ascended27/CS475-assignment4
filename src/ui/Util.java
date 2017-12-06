@@ -3,14 +3,12 @@ package src.ui;
 import javafx.collections.ObservableList;
 import src.*;
 
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Util {
 
@@ -18,6 +16,7 @@ public class Util {
     private CalendarManager cm;
     private Client owner;
     private ObservableList<EventRow> observableList;
+    private EventRow retrievedEventRow;
 
     private Util() throws RemoteException {
         cm = CalendarManagerImpl.getInstance();
@@ -84,6 +83,14 @@ public class Util {
         }
     }
 
+    public Event retrieveEvent(Timestamp start, Timestamp stop) {
+        try {
+            return cm.getCalendar(owner).retrieveEvent(owner, start, stop);
+        } catch (RemoteException e) {
+            return null;
+        }
+    }
+
     public boolean killClock() {
         try {
             if (owner != null) {
@@ -99,7 +106,7 @@ public class Util {
         }
     }
 
-    public ArrayList<Client> getUsers(){
+    public ArrayList<Client> getUsers() {
         try {
             return (ArrayList<Client>) cm.allUsers();
         } catch (RemoteException e) {
@@ -152,5 +159,13 @@ public class Util {
 
     public Client getOwner() {
         return this.owner;
+    }
+
+    public void setRetrievedEventRow(EventRow retrievedEventRow) {
+        this.retrievedEventRow = retrievedEventRow;
+    }
+
+    public EventRow getRetrievedEventRow() {
+        return retrievedEventRow;
     }
 }

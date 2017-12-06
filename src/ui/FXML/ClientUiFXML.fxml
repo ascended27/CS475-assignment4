@@ -15,7 +15,7 @@
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
                                 <Button fx:id="scheduleButton" layoutX="10.0" layoutY="57.0" mnemonicParsing="false" onMouseClicked="#openScheduleDialog" prefWidth="82.0" text="Schedule" />
-                                <Button id="deleteButton" fx:id="deleteButton" layoutX="10.0" layoutY="106.0" mnemonicParsing="false" onMouseClicked="#openDeleteDialog" prefWidth="82.0" text="Delete" />
+                                <Button fx:id="retrieveButton" layoutX="10.0" layoutY="106.0" mnemonicParsing="false" onMouseClicked="#openEvent" prefWidth="82.0" text="Retrieve" />
                             </children>
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

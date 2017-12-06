@@ -222,7 +222,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
                     }
                 }
             } else {
-                eventList.add(new Event("", start, stop, owner, null, false, true));
+                eventList.add(new Event("Open Event", start, stop, owner, null, false, true));
                 return true;
             }
 

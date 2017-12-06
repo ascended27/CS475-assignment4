@@ -7,14 +7,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import src.Event;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -24,7 +24,7 @@ public class ClientUiController {
     @FXML
     public Button scheduleButton;
     @FXML
-    public Button deleteButton;
+    public Button retrieveButton;
     @FXML
     public TableView table;
 
@@ -67,7 +67,25 @@ public class ClientUiController {
         }
     }
 
-    public void openDeleteDialog(MouseEvent mouseEvent) {
-        deleteButton.setText("Test");
+    public void openEvent(MouseEvent mouseEvent) {
+        try {
+            TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            EventRow eventRow = (EventRow) table.getItems().get(row);
+            utils.setRetrievedEventRow(eventRow);
+
+            Stage window = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/RetrievedEvent.fxml"));
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle("New Event Open");
+            window.setResizable(false);
+
+            Scene scene = new Scene(root);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            AlertBox.display("Error","Failed to load event");
+            e.printStackTrace();
+        }
     }
 }

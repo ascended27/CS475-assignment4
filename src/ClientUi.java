@@ -48,7 +48,7 @@ public class ClientUi {
             // Insert Open Event
             Timestamp start = new Timestamp(System.currentTimeMillis() + 60000);
             Timestamp stop = new Timestamp((long) (System.currentTimeMillis() + 5 * (3.6 * Math.pow(6, 10))));
-            System.out.println("Open Event inserted: " + cal.insertOpenEvent(client, start, stop, false));
+            System.out.println("Open Event inserted: " + cal.insertOpenEvent(client, start, stop));
 
             // Schedule Event
             Timestamp eventStart = new Timestamp(System.currentTimeMillis() + 5 * 60000);

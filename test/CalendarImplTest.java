@@ -28,7 +28,7 @@ public class CalendarImplTest {
             Timestamp start = new Timestamp(System.currentTimeMillis());
             Timestamp stop = new Timestamp(System.currentTimeMillis() + 24 * HALF_HOUR);
 //            System.out.println(String.format("Start: %s\nStop: %s", start.toString(), stop.toString()));
-            System.out.println("Open Event inserted: " + cManager.getCalendar(client).insertOpenEvent(client, start, stop, false));
+            System.out.println("Open Event inserted: " + cManager.getCalendar(client).insertOpenEvent(client, start, stop));
         }
     }
 
