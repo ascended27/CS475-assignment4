@@ -156,7 +156,7 @@ public class CalendarImpl extends UnicastRemoteObject implements Calendar {
                 }
             }
 
-            if (canSchedule) {
+            if (canSchedule && owner.getName().equals(this.owner.getName())) {
                 for (Calendar cal : calendars) {
                     cal.scheduleEvent(owner, attendees, title, start, stop, type);
                 }
